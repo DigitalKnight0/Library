@@ -14,26 +14,29 @@
         <button class="add">Add new Book</button>
         <div class="shelf"></div>
     </div>
-    <form action="">
+    <form class="hidden" action="">
         <ul>
             <li>
-                <label for="title">Title</label>
+                <label for="title">Title:</label>
                 <input type="text" id="title" required>
             </li>
             <li>
-                <label for="author">Author</label>
+                <label for="author">Author:</label>
                 <input type="text" id="author" required>
             </li>
             <li>
-                <label for="pages">Pages</label>
+                <label for="pages">Pages:</label>
                 <input type="number" id="pages" required>
             </li>
             <li>
-                <label for="read">Read?</label>
+                <label for="read">Read?:</label>
                 <input type="checkbox" id="read">
             </li>
         </ul>
-        <button type="submit">Add to Library</button>
+        <div class="form-buttons">
+            <button type="button">Close</button>
+            <button type="submit">Add to Library</button>
+        </div>
     </form>
 
     <template class="card-template">
@@ -55,7 +58,7 @@
                 <p class="read"></p>
             </div>
             <div class="buttons">
-                <button class="read-status">Read</button>
+                <button class="read-status"></button>
                 <button class="remove-card">Remove Book</button>
             </div>
         </div>

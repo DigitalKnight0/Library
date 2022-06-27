@@ -1,7 +1,16 @@
 let myLibrary = [];
 const newBook = document.querySelector('.add')
 const addBook = document.querySelector('form')
-const library = document.querySelector('.shelf')
+const closeButton = document.querySelector('form button[type="button"]')
+const library = document.querySelector('.shelf');
+
+(function(){
+    updateDisplay()
+})()
+
+closeButton.addEventListener('click', (e) => {
+    addBook.classList.add('hidden')
+})
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -17,7 +26,7 @@ function addBookToLibrary(title, author, pages, read) {
 }
 
 newBook.addEventListener('click', () => {
-
+    addBook.classList.remove('hidden')
 })
 
 addBook.addEventListener('submit', (event)=>{
@@ -29,6 +38,8 @@ addBook.addEventListener('submit', (event)=>{
     let pages = inputs[2].value
     let read = inputs[3].checked
     addBookToLibrary(title, author, pages, read)
+    addBook.reset()
+    addBook.classList.add('hidden')
 })
 
 function updateDisplay(){
@@ -36,6 +47,7 @@ function updateDisplay(){
     myLibrary.forEach((book, index) => {
         book.index = index
         let newCard = createCard(book)
+        setReadStatus(newCard, book)
         library.appendChild(newCard)
     });
     updateListeners()
@@ -46,7 +58,7 @@ function createCard(book){
     card.querySelector('.title').textContent = book.title
     card.querySelector('.author').textContent = book.author
     card.querySelector('.pages').textContent = book.pages
-    card.querySelector('.read').textContent = book.read ? "Read" : "Not Read"
+    card.querySelector('.read').textContent = book.read ? "Yes" : "No"
     card.querySelector('.buttons').setAttribute('data-index',book.index)
     return card
 }
@@ -69,12 +81,13 @@ function changeReadStatus(e){
     let readBox = targetCard.querySelector('.read')
     if(book.read){
         book.read = false
-        readBox.textContent = 'Not Read'
+        readBox.textContent = 'No'
     }
     else{
         book.read = true
-        readBox.textContent = 'Read'
+        readBox.textContent = 'Yes'
     }
+    setReadStatus(targetCard, book)
 }
 
 function removeBook(e){
@@ -83,4 +96,16 @@ function removeBook(e){
     let book = myLibrary[index]
     myLibrary = myLibrary.filter((book, bookIndex) => bookIndex !== index)
     updateDisplay()
+}
+
+function setReadStatus(card, book){
+    const button = card.querySelector('.read-status')
+    if(book.read){
+        button.textContent = "Unread"
+        button.classList.add('unread')
+    }
+    else{
+        button.textContent = "Read"
+        button.classList.remove('unread')
+    }
 }
