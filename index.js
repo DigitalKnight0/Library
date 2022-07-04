@@ -31,18 +31,6 @@ newBook.addEventListener('click', () => {
     addBook.classList.remove('hidden')
 })
 
-addBook.addEventListener('submit', (event)=>{
-    event.preventDefault()
-    console.log('heck')
-    let inputs = document.querySelectorAll('form input')
-    let title = inputs[0].value
-    let author = inputs[1].value
-    let pages = inputs[2].value
-    let read = inputs[3].checked
-    addBookToLibrary(title, author, pages, read)
-    addBook.reset()
-    addBook.classList.add('hidden')
-})
 
 function updateDisplay(){
     library.innerHTML = ''
@@ -111,3 +99,54 @@ function setReadStatus(card, book){
         button.classList.remove('unread')
     }
 }
+
+// Validation for form
+
+const bookTitle = addBook.querySelector('#title')
+bookTitle.addEventListener('input', () => {
+    if(bookTitle.validity.valueMissing){
+        bookTitle.setCustomValidity('The Title Field cannot be empty!')
+        bookTitle.reportValidity()
+    } else if(bookTitle.validity.tooShort){
+        bookTitle.setCustomValidity('The title should be at least 5 characters long')
+        bookTitle.reportValidity()
+    } else {
+        bookTitle.setCustomValidity('')
+    }
+})
+
+const bookAuthor = addBook.querySelector('#author')
+author.addEventListener('input', () => {
+    if(author.validity.valueMissing){
+        author.setCustomValidity('The author Field cannot be empty!')
+        author.reportValidity()
+    } else {
+        author.setCustomValidity('')
+    }
+})
+
+const bookPages = addBook.querySelector('#pages')
+pages.addEventListener('input', () => {
+    if(pages.validity.valueMissing){
+        pages.setCustomValidity('The Pages Field cannot be empty!')
+        pages.reportValidity()
+    } else if(pages.validity.rangeUnderflow){
+        pages.setCustomValidity('There Should be At Least 5 Pages!')
+        pages.reportValidity()
+    } else {
+        bookTitle.setCustomValidity('')
+    }
+})
+
+addBook.addEventListener('submit', (event)=>{
+    event.preventDefault()
+    if(!bookTitle.validity.valid || !bookAuthor.validity.valid || !bookPages.validity.valid) return
+    let inputs = document.querySelectorAll('form input')
+    let title = inputs[0].value
+    let author = inputs[1].value
+    let pages = inputs[2].value
+    let read = inputs[3].checked
+    addBookToLibrary(title, author, pages, read)
+    addBook.reset()
+    addBook.classList.add('hidden')
+})
